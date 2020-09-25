@@ -56,6 +56,16 @@ namespace nativa
 		public:
 			friend class span<T>;
 
+			span_manager()
+			{
+				_span = nullptr;
+			}
+
+			span_manager(span_manager<T>&& manager)
+			{
+				_span = manager._span;
+			}
+
 			void manage(span<T>& span)
 			{
 				_span = &span;
@@ -80,7 +90,7 @@ namespace nativa
 			}
 			
 		private:
-			span<T>* _span = nullptr;
+			span<T>* _span;
 		};
 
 		template <class T>
@@ -146,11 +156,6 @@ namespace nativa
 		class list : public virtual_list<T>
 		{
 		public:
-			list() : virtual_list<T>(span<T>(0, 8)) 
-			{
-				_manager.manage(this->_memory);
-			}
-
 			list(std::initializer_list<T>&& init)
 				: virtual_list<T>(span<T>(0, init.size()))
 			{
@@ -164,6 +169,11 @@ namespace nativa
 				{
 					this->_memory[i] = *it;
 				}
+			}
+
+			list(list<T>&& old_list)
+			{
+				old_list.
 			}
 
 			void add(T element)
