@@ -175,7 +175,7 @@ namespace nativa
 			void insert(index_type index, T element)
 			{
 				extend();
-				for (index_type i = index + 1; i < this->_count; ++i)
+				for (index_type i = this->_count - 1; i > index ; --i)
 				{
 					this->_memory[i] = this->_memory[i - 1];
 				}
