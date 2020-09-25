@@ -184,17 +184,56 @@ namespace nativa
 
 			void remove_at(index_type index)
 			{
-				int new_count = this->_count - 1;
+				index_type new_count = this->_count - 1;
+				/*
 				for (index_type i = index; i < new_count; ++i)
 				{
 					this->_memory[i] = this->_memory[i + 1];
+				}
+				*/
+				move_left(index + 1, new_count, 1);
+				this->_count = new_count;
+			}
+
+			void remove_all(T element)
+			{
+				index_type new_count = 0;
+				index_type slice_begin = 0;
+				for (index_type i = 0; i < this->_count; ++i)
+				{
+					if (this->_memory[i] == element)
+					{
+						if (slice_begin != 0)
+						{
+							move_left(slice_begin, i - 1, i - new_count);
+							slice_begin = 0;
+						}
+					}
+					else
+					{
+						++new_count;
+						if (slice_begin == 0)
+						{
+							slice_begin = i;
+						}
+					}
+				}
+				if (slice_begin != 0)
+				{
+					move_left(slice_begin, this->_count - 1, this->_count - new_count);
 				}
 				this->_count = new_count;
 			}
 
 			virtual_list<T> range(index_type begin, index_type end)
 			{
-				return virtual_list<T>(span<T>(&this->_memory[begin], end - begin), end - begin);
+				auto length = end - begin;
+				return virtual_list<T>(span<T>(&this->_memory[begin], length), length);
+			}
+
+			virtual_list<T> range(index_type begin)
+			{
+				return range(begin, this->_count);
 			}
 
 			void clear()
@@ -215,6 +254,16 @@ namespace nativa
 					grow_capacity();
 				}
 				this->_count += 1;
+			}
+
+			void move_left(index_type from, index_type to, const index_type diff = 1)
+			{
+				from -= diff;
+				to -= diff;
+				for (index_type i = from; i <= to; ++i)
+				{
+					this->_memory[i] = this->_memory[i + diff];
+				}
 			}
 
 			span_manager<T> _manager;
