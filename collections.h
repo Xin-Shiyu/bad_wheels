@@ -118,6 +118,16 @@ namespace nativa
 				}
 			}
 
+			T* begin()
+			{
+				return &_memory[0];
+			}
+
+			T* end()
+			{
+				return &_memory[_count];
+			}
+
 			virtual_list(span<T>&& memory)
 				: _memory(std::move(memory)) {}
 
@@ -141,31 +151,38 @@ namespace nativa
 				_manager.manage(this->_memory);
 			}
 
-			list(std::initializer_list<T> init)
+			list(std::initializer_list<T>&& init)
 				: virtual_list<T>(span<T>(0, init.size()))
 			{
 				_manager.manage(this->_memory);
 				auto end = init.end();
+				this->_count = init.size();
+				index_type i = 0;
 				for (auto it = init.begin();
 					it != end;
-					++it)
+					++it, ++i)
 				{
-					add(*it);
+					this->_memory[i] = *it;
 				}
 			}
 
 			void add(T element)
 			{
-				auto size = this->_memory.size();
-				if (size == this->_count)
-				{
-					grow_capacity();
-				}
+				extend();
 				this->_memory[this->_count] = element;
-				this->_count += 1;
 			}
 
-			void remove(index_type index)
+			void insert(index_type index, T element)
+			{
+				extend();
+				for (index_type i = index + 1; i < this->_count; ++i)
+				{
+					this->_memory[i] = this->_memory[i - 1];
+				}
+				this->_memory[index] = element;
+			}
+
+			void remove_at(index_type index)
 			{
 				int new_count = this->_count - 1;
 				for (index_type i = index; i < new_count; ++i)
@@ -190,6 +207,16 @@ namespace nativa
 			{
 				this->_manager.resize(this->_memory.size() * 2);
 			}
+
+			void extend()
+			{
+				if (this->_memory.size() == this->_count)
+				{
+					grow_capacity();
+				}
+				this->_count += 1;
+			}
+
 			span_manager<T> _manager;
 		};
 	}
