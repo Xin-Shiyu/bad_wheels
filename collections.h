@@ -77,12 +77,12 @@ namespace nativa
 				delete[] _span->_ptr;
 			}
 
-			void resize(index_type new_size)
+			void resize(index_type new_size, index_type copy_size)
 			{
 				T* new_ptr = new T[new_size];
-				for (index_type i = 0; i < new_size; ++i)
+				for (index_type i = 0; i < copy_size; ++i)
 				{
-					new_ptr[i] = _span->_ptr[i];
+					new_ptr[i] = std::move(_span->_ptr[i]);
 				}
 				delete[] _span->_ptr;
 				_span->_ptr = new_ptr;
@@ -156,6 +156,11 @@ namespace nativa
 		class list : public virtual_list<T>
 		{
 		public:
+			list() : virtual_list<T>(span<T>(0, 8))
+			{
+				_manager.manage(this->_memory);
+			}
+
 			list(std::initializer_list<T>&& init)
 				: virtual_list<T>(span<T>(0, init.size()))
 			{
@@ -171,15 +176,10 @@ namespace nativa
 				}
 			}
 
-			list(list<T>&& old_list)
-			{
-				old_list.
-			}
-
 			void add(T element)
 			{
 				extend();
-				this->_memory[this->_count] = element;
+				this->_memory[this->_count - 1] = element;
 			}
 
 			void insert(index_type index, T element)
@@ -187,7 +187,7 @@ namespace nativa
 				extend();
 				for (index_type i = this->_count - 1; i > index ; --i)
 				{
-					this->_memory[i] = this->_memory[i - 1];
+					this->_memory[i] = std::move(this->_memory[i - 1]);
 				}
 				this->_memory[index] = element;
 			}
@@ -252,16 +252,12 @@ namespace nativa
 			}
 
 		private:
-			void grow_capacity()
-			{
-				this->_manager.resize(this->_memory.size() * 2);
-			}
-
 			void extend()
 			{
-				if (this->_memory.size() == this->_count)
+				auto capacity = this->_memory.size();
+				if (capacity == this->_count)
 				{
-					grow_capacity();
+					this->_manager.resize(capacity * 2, this->_count);
 				}
 				this->_count += 1;
 			}
@@ -272,7 +268,7 @@ namespace nativa
 				to -= diff;
 				for (index_type i = from; i <= to; ++i)
 				{
-					this->_memory[i] = this->_memory[i + diff];
+					this->_memory[i] = std::move(this->_memory[i + diff]);
 				}
 			}
 
