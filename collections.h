@@ -282,8 +282,14 @@ namespace nativa
 				attach(part);
 			}
 
+			void attach(std::initializer_list<T>&& init)
+			{
+				attach(list<T>(std::move(init)));
+			}
+
 			virtual_list<T> range(index_type begin, index_type end)
 			{
+				if (begin == 0 and end == this->_count) return *this;
 				auto length = end - begin;
 				return virtual_list<T>(span<T>(&this->_memory[begin], length), length);
 			}
