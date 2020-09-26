@@ -4,6 +4,7 @@
 
 #include <initializer_list>
 #include <memory>
+#include <utility>
 
 namespace nativa
 {
@@ -125,6 +126,14 @@ namespace nativa
 			bool contains(T&& element)
 			{
 				return contains(element);
+			}
+
+			void reverse()
+			{
+				for (index_type i = 0, j = _count - 1; i < j; ++i, --j)
+				{
+					std::swap(_memory[i], _memory[j]);
+				}
 			}
 
 			index_type count()
