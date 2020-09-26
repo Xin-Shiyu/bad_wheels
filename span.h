@@ -2,8 +2,9 @@
 #ifndef __NATIVA_COLLECTIONS_SPAN
 #define __NATIVA_COLLECTIONS_SPAN
 
-#include "common.h"
 #include <memory>
+
+#include "collections_common.h"
 
 namespace nativa
 {
