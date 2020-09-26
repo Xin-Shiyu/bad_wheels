@@ -12,7 +12,13 @@ namespace nativa
 		using index_type = long;
 
 		template <class T>
+		class span;
+		template <class T>
 		class span_manager;
+		template <class T>
+		class virtual_list;
+		template <class T>
+		class list;
 
 		template <class T>
 		class span
@@ -97,7 +103,7 @@ namespace nativa
 		class virtual_list
 		{
 		public:
-			index_type find(T element, index_type begin_index = 0)
+			index_type find(T& element, index_type begin_index = 0)
 			{
 				for (index_type i = begin_index; i < _count; ++i)
 				{
@@ -106,9 +112,19 @@ namespace nativa
 				return -1;
 			}
 
-			bool contains(T element)
+			index_type find(T&& element, index_type begin_index = 0)
+			{
+				return find(element, begin_index);
+			}
+
+			bool contains(T& element)
 			{
 				return find(element) != -1;
+			}
+
+			bool contains(T&& element)
+			{
+				return contains(element);
 			}
 
 			index_type count()
@@ -176,13 +192,18 @@ namespace nativa
 				}
 			}
 
-			void add(T element)
+			void add(T& element)
 			{
 				extend();
 				this->_memory[this->_count - 1] = element;
 			}
 
-			void insert(index_type index, T element)
+			void add(T&& element)
+			{
+				add(element);
+			}
+
+			void insert(index_type index, T& element)
 			{
 				extend();
 				for (index_type i = this->_count - 1; i > index ; --i)
@@ -190,6 +211,11 @@ namespace nativa
 					this->_memory[i] = std::move(this->_memory[i - 1]);
 				}
 				this->_memory[index] = element;
+			}
+
+			void insert(index_type index, T&& element)
+			{
+				insert(index, element);
 			}
 
 			void remove_at(index_type index)
@@ -205,7 +231,7 @@ namespace nativa
 				this->_count = new_count;
 			}
 
-			void remove_all(T element)
+			void remove_all(T& element)
 			{
 				index_type new_count = 0;
 				index_type slice_begin = 0;
@@ -235,6 +261,27 @@ namespace nativa
 				this->_count = new_count;
 			}
 
+			void remove_all(T&& element)
+			{
+				remove_all(element);
+			}
+
+			void attach(virtual_list<T>& part)
+			{
+				auto new_start = this->_count;
+				auto part_count = part.count();
+				extend(part_count);
+				for (index_type i = 0, j = new_start; i < part_count; ++i, ++j)
+				{
+					this->_memory[j] = part[i];
+				}
+			}
+
+			void attach(virtual_list<T>&& part)
+			{
+				attach(part);
+			}
+
 			virtual_list<T> range(index_type begin, index_type end)
 			{
 				auto length = end - begin;
@@ -252,14 +299,15 @@ namespace nativa
 			}
 
 		private:
-			void extend()
+			void extend(index_type diff = 1)
 			{
 				auto capacity = this->_memory.size();
-				if (capacity == this->_count)
+				while (capacity < this->_count + diff)
 				{
-					this->_manager.resize(capacity * 2, this->_count);
+					capacity *= 2;
 				}
-				this->_count += 1;
+				this->_manager.resize(capacity, this->_count);
+				this->_count += diff;
 			}
 
 			void move_left(index_type from, index_type to, const index_type diff = 1)
