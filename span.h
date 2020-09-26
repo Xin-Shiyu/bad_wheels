@@ -35,6 +35,14 @@ namespace nativa
 				_ptr = ptr;
 			}
 
+			void fill(T&& value)
+			{
+				for (index_type i = 0; i < _size; ++i)
+				{
+					_ptr[i] = value;
+				}
+			}
+
 			virtual void resize(index_type new_size)
 			{
 				_size = new_size;
@@ -85,6 +93,14 @@ namespace nativa
 				{
 					new_ptr[i] = std::move(_span->_ptr[i]);
 				}
+				delete[] _span->_ptr;
+				_span->_ptr = new_ptr;
+				_span->_size = new_size;
+			}
+
+			void resize_empty(index_type new_size)
+			{
+				T* new_ptr = new T[new_size];
 				delete[] _span->_ptr;
 				_span->_ptr = new_ptr;
 				_span->_size = new_size;
