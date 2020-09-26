@@ -36,6 +36,18 @@ namespace nativa
         {
             return get_hash_code(value.c_str());
         }
+
+        class hashable
+        {
+        public:
+            virtual unsigned get_hash_code() = 0;
+        };
+
+        template<>
+        unsigned get_hash_code<hashable>(hashable value)
+        {
+            return value.get_hash_code();
+        }
     }
 }
 #endif
