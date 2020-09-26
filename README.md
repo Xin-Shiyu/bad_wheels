@@ -4,7 +4,7 @@ Bad wheels written while learning C++
 # About
 Containers are interesting. To learn C++, I'm working on these "bad wheels" for practice.
 
-There is currently only one "wheel", `list<T>`. It's similar to List<T> in .NET (at least in name).
+There is currently only one "wheel", `list<T>`. It's similar to `List<T>` in .NET (at least in name).
 
 The `list<T>` is based on another class template `virtual_list<T>`. The difference is that `virtual_list<T>` does not manage memory itself and thus serves more like a "list view", while `list<T>` can be extended and occupies actual space.
 
