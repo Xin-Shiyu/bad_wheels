@@ -27,7 +27,7 @@ The methods limited to `list<T>` are:
 - `insert` which inserts an element before a given index in the list;
 - `remove_at` which removes the element at a given index;
 - `remove_all` which removes every element that equals to the given one from the list;
-- `attach` which attaches another `virtual_list<T>`, including `list<T>` to the original list (given an std::initializer_list will currently create a temporary `list<T>` based on that which may be changed in the future);
+- `attach` which attaches another `virtual_list<T>`, including `list<T>` to the original list (giving an std::initializer_list will currently create a temporary `list<T>` based on that which may be changed in the future);
 - `range` which returns a `virtual_list<T>` that refers to a slice of the list.
 
 Note that the `virtual_list<T>` created with the `range` method will become invalid when the original `list<T>` is reallocated.
