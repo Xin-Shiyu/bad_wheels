@@ -5,7 +5,6 @@
 #include <initializer_list>
 #include <utility>
 
-#include "common.h"
 #include "span.h"
 #include "list.h"
 
