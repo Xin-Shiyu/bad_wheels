@@ -7,5 +7,6 @@
 
 #include "span.h"
 #include "list.h"
+#include "dictionary.h"
 
 #endif
