@@ -6,7 +6,7 @@ namespace nativa
 {
 	namespace collections
 	{
-		using index_type = long;
+		using index_type = size_t;
     }
 }
 

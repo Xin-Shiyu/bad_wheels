@@ -26,7 +26,7 @@ namespace nativa
                 TKey key;
                 TValue value;
                 index_type next;
-                unsigned hash_code;
+                int hash_code;
             };
 
             span<index_type> buckets;

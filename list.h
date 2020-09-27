@@ -3,6 +3,7 @@
 #define __NATIVA_COLLECTIONS_LIST
 
 #include <memory>
+#include <limits>
 
 #include "collections_common.h"
 #include "span.h"
@@ -59,7 +60,7 @@ namespace nativa
 
 			T& operator[](index_type index)
 			{
-				if (index >= 0)
+				if (0 <= index && index < _count)
 				{
 					return _memory[index];
 				}
@@ -214,7 +215,7 @@ namespace nativa
 
 			virtual_list<T> range(index_type begin, index_type end)
 			{
-				if (begin == 0 and end == this->_count) return *this;
+				if (begin == 0 && end == this->_count) return *this;
 				auto length = end - begin;
 				return virtual_list<T>(span<T>(&this->_memory[begin], length), length);
 			}
