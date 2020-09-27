@@ -38,21 +38,9 @@ namespace nativa
         }
         #pragma endregion
         
-        class prime
+        namespace prime
         {
-        public:
-            int get(int min)
-            {
-                for (int i = 0; i < 72; ++i)
-                {
-                    if (primes[i] >= min)
-                    {
-                        return primes[i];
-                    }
-                }
-            }
-        private:
-            const int primes[72]
+            const int primes[72] =
             {
                 3,
                 7, 
@@ -127,7 +115,19 @@ namespace nativa
                 5999471,
                 7199369
             }; // 以上素数来自 .NET Core 的 HashHelpers
-        };
+            
+            static int get(int min)
+            {
+                for (int i = 0; i < 72; ++i)
+                {
+                    if (primes[i] >= min)
+                    {
+                        return primes[i];
+                    }
+                }
+                return -1; // 暂时不考虑过大的数
+            }
+        }
     }
 }
 #endif
