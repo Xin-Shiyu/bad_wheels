@@ -9,5 +9,6 @@
 #include "list.h"
 #include "dictionary.h"
 #include "stack.h"
+#include "queue.h"
 
 #endif
