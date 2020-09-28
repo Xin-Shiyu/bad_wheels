@@ -88,9 +88,52 @@ namespace nativa
                 TValue value;
             private:
                 friend class dictionary;
+                friend class iterator;
                 index_type next = -1;
                 int hash_code = -1;
             };
+
+            class iterator
+            {
+            public:
+                entry& operator*()
+                {
+                    return _dictionary->entries[_index];
+                }
+
+                void operator++()
+                {
+                    ++_index;
+                    while (_index < _dictionary->entries.size() && _dictionary->entries[_index].hash_code == -1)
+                    {   // 如果没有到实际的末尾就直接跳过。
+                        ++_index;
+                    }
+                }
+
+                bool operator!=(iterator it)
+                {
+                    return (it._index != _index) || (it._dictionary != _dictionary);
+                }
+            private:
+                friend class dictionary;
+                index_type _index;
+                dictionary* _dictionary;
+                iterator(dictionary* my_dictionary, index_type index)
+                {
+                    _index = index;
+                    _dictionary = my_dictionary;
+                }
+            };
+
+            iterator begin()
+            {
+                return iterator(this, 0);
+            }
+
+            iterator end()
+            {
+                return iterator(this, entries.size());
+            }
 
         private:
             span<index_type> buckets;
