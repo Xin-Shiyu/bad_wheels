@@ -8,7 +8,7 @@ Containers are interesting. To learn C++, I'm working on these "bad wheels" for 
 
 # Usage of the wheels
 
-It's evident that *none* of the wheels is production-ready, but I guess this simple description of there usage might be useful if you just want to play with them (and 辱骂 them).
+It's evident that *none* of the wheels is production-ready, but I guess this simple description of their usage might be useful if you just want to play with them (and 辱骂 them).
 
 Currently there are only containers and they all exist in the namespace nativa::collections. By including the header "collections.h", you will have all the following wheels ready for use.
 
