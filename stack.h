@@ -12,14 +12,10 @@ namespace nativa
         class stack
         {
         public:
-            void push(T& element)
+            template <class Te>
+            void push(Te&& element)
             {
-                _base[_count] = element;
-                ++_count;
-            }
-
-            void push(T&& element)
-            {
+                EnsureTypeSafety(T, Te);
                 _base[_count] = element;
                 ++_count;
             }

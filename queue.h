@@ -14,26 +14,12 @@ namespace nativa
         class queue
         { // 简单的基于链表的队列
         public:
-            void enqueue(T&& element)
+            template <class Te>
+            void enqueue(Te&& element)
             {
+                EnsureTypeSafety(T, Te);
                 _count += 1;
                 node* new_node = new node(std::forward<T>(element));
-                if (rear == nullptr)
-                {
-                    front = new_node;
-                    rear = new_node;
-                }
-                else
-                {
-                    rear->next = new_node;
-                    rear = rear->next;
-                }
-            }
-
-            void enqueue(T& element)
-            {
-                _count += 1;
-                node* new_node = new node(element);
                 if (rear == nullptr)
                 {
                     front = new_node;
@@ -93,6 +79,12 @@ namespace nativa
             node* front = nullptr;
             node* rear = nullptr;
             index_type _count = 0;
+        };
+    
+        template <class T, index_type max_count>
+        class circular_queue
+        {
+
         };
     }
 }

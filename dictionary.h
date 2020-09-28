@@ -44,22 +44,13 @@ namespace nativa
                 return entries[find_entry(key)].value;
             }
 
-            void add(TKey&& key, const TValue& value)
+            template <class TKeye, class TValuee>
+            void add(TKeye&& key, TValuee&& value)
             {
+                EnsureTypeSafety(TKey, TKeye);
+                EnsureTypeSafety(TValue, TValuee);
                 try_reserve();
-                map_entry_key(key, fill_in_value(value));
-            }
-
-            void add(const TKey& key, const TValue& value)
-            {
-                try_reserve();
-                map_entry_key(key, fill_in_value(value));
-            }
-
-            void add(TKey&& key, TValue&& value)
-            {
-                try_reserve();
-                map_entry_key(key, fill_in_value(std::move(value)));
+                map_entry_key(std::forward<TKey>(key), fill_in_value(std::forward<TValue>(value)));
             }
 
             bool contains_key(TKey& key)
@@ -184,9 +175,10 @@ namespace nativa
                 }
             }
 
-            template <class TValue1>
-            index_type fill_in_value(TValue1&& value)
+            template <class TValuee>
+            index_type fill_in_value(TValuee&& value)
             {
+                EnsureTypeSafety(TValue, TValuee);
                 index_type target_entry_index = find_empty_entry();
                 entries[target_entry_index].value = value;
                 return target_entry_index;

@@ -118,15 +118,12 @@ namespace nativa
 				}
 			}
 
-			void add(T& element)
+			template <class Te>
+			void add(Te&& element)
 			{
+				EnsureTypeSafety(T, Te);
 				extend();
 				this->_memory[this->_count - 1] = element;
-			}
-
-			void add(T&& element)
-			{
-				add(element);
 			}
 
 			void insert(index_type index, T& element)
@@ -192,7 +189,7 @@ namespace nativa
 				remove_all(element);
 			}
 
-			void attach(virtual_list<T>& part)
+			void attach(const virtual_list<T>& part)
 			{
 				auto new_start = this->_count;
 				auto part_count = part.count();
@@ -204,7 +201,7 @@ namespace nativa
 			}
 
 			void attach(virtual_list<T>&& part)
-			{
+			{	// 这里不需要移动语义，virtual_list 的来源不应被移动
 				attach(part);
 			}
 
