@@ -84,7 +84,48 @@ namespace nativa
         template <class T, index_type max_count>
         class circular_queue
         {
+        public:
+            template <class Te>
+            void enqueue(Te&& element)
+            {
+                EnsureTypeSafety(T, Te);
+                base[before_front] = element;
+                before_front = (before_front + 1) % max_count;
+                _count += 1;
+            }
 
+            T dequeue()
+            {
+                T res = std::move(base[rear]);
+                rear = (rear + 1) % max_count;
+                _count -= 1;
+                return res;
+            }
+
+            const T& peek()
+            {
+                return base[rear];
+            }
+
+            bool is_empty()
+            {
+                return _count == 0;
+            }
+
+            bool is_full()
+            {
+                return _count == max_count;
+            }
+
+            index_type count()
+            {
+                return _count;
+            }
+        private:
+            T base[max_count];
+            index_type before_front = 0;
+            index_type rear = 0;
+            index_type _count = 0;
         };
     }
 }
