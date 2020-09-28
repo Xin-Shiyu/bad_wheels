@@ -8,5 +8,6 @@
 #include "span.h"
 #include "list.h"
 #include "dictionary.h"
+#include "stack.h"
 
 #endif
