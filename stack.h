@@ -15,7 +15,7 @@ namespace nativa
             template <class Te>
             void push(Te&& element)
             {
-                EnsureTypeSafety(T, Te);
+                __NATIVA_ENSURE_TYPE_SAFETY(T, Te);
                 _base[_count] = element;
                 ++_count;
             }

@@ -47,8 +47,8 @@ namespace nativa
             template <class TKeye, class TValuee>
             void add(TKeye&& key, TValuee&& value)
             {
-                EnsureTypeSafety(TKey, TKeye);
-                EnsureTypeSafety(TValue, TValuee);
+                __NATIVA_ENSURE_TYPE_SAFETY(TKey, TKeye);
+                __NATIVA_ENSURE_TYPE_SAFETY(TValue, TValuee);
                 try_reserve();
                 map_entry_key(std::forward<TKey>(key), fill_in_value(std::forward<TValue>(value)));
             }
@@ -178,7 +178,7 @@ namespace nativa
             template <class TValuee>
             index_type fill_in_value(TValuee&& value)
             {
-                EnsureTypeSafety(TValue, TValuee);
+                __NATIVA_ENSURE_TYPE_SAFETY(TValue, TValuee);
                 index_type target_entry_index = find_empty_entry();
                 entries[target_entry_index].value = value;
                 return target_entry_index;

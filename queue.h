@@ -17,7 +17,7 @@ namespace nativa
             template <class Te>
             void enqueue(Te&& element)
             {
-                EnsureTypeSafety(T, Te);
+                __NATIVA_ENSURE_TYPE_SAFETY(T, Te);
                 _count += 1;
                 node* new_node = new node(std::forward<T>(element));
                 if (rear == nullptr)
@@ -88,7 +88,7 @@ namespace nativa
             template <class Te>
             void enqueue(Te&& element)
             {
-                EnsureTypeSafety(T, Te);
+                __NATIVA_ENSURE_TYPE_SAFETY(T, Te);
                 base[before_front] = element;
                 before_front = (before_front + 1) % max_count;
                 _count += 1;

@@ -121,7 +121,7 @@ namespace nativa
 			template <class Te>
 			void add(Te&& element)
 			{
-				EnsureTypeSafety(T, Te);
+				__NATIVA_ENSURE_TYPE_SAFETY(T, Te);
 				extend();
 				this->_memory[this->_count - 1] = element;
 			}
