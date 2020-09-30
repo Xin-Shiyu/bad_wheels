@@ -50,27 +50,21 @@ namespace nativa
                 __NATIVA_ENSURE_TYPE_SAFETY(TKey, TKeye);
                 __NATIVA_ENSURE_TYPE_SAFETY(TValue, TValuee);
                 try_reserve();
-                map_entry_key(std::forward<TKey>(key), fill_in_value(std::forward<TValue>(value)));
+                map_entry_key(std::forward<TKeye>(key), fill_in_value(std::forward<TValuee>(value)));
             }
 
-            bool contains_key(TKey& key)
+            template <class TKeye>
+            bool contains_key(TKeye&& key)
             {
+                __NATIVA_ENSURE_TYPE_SAFETY(TKey, TKeye);
                 return find_entry(key) != -1;
             }
 
-            bool contains_key(TKey&& key)
+            template <class TKeye>
+            void remove_at(TKeye&& key)
             {
-                return contains_key(key);
-            }
-
-            void remove_at(TKey& key)
-            {
+                __NATIVA_ENSURE_TYPE_SAFETY(TKey, TKeye);
                 entries[find_entry(key)].hash_code = -1;
-            }
-
-            void remove_at(TKey&& key)
-            {
-                remove_at(key);
             }
 
             struct entry
@@ -204,7 +198,7 @@ namespace nativa
 
             void resize(index_type new_count)
             {
-                auto next_prime = helpers::prime::get(new_count);
+                index_type next_prime = helpers::prime::get(new_count);
                 buckets_manager.resize_empty(next_prime);
                 buckets.fill(-1);
                 auto old_entries_size = entries.size();

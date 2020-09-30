@@ -19,7 +19,7 @@ namespace nativa
             {
                 __NATIVA_ENSURE_TYPE_SAFETY(T, Te);
                 _count += 1;
-                node* new_node = new node(std::forward<T>(element));
+                node* new_node = new node(std::forward<Te>(element));
                 if (rear == nullptr)
                 {
                     front = new_node;

@@ -16,19 +16,25 @@ namespace nativa
             return value;
         }
 
-        const int string_roll = 51;
+        const int string_roll = 233;
         template<>
         constexpr int get_hash_code<const char*>(const char* value)
         {   // 用多项式字符串哈希算法
             int res = 0;
             int p = 1;
-            while (value != '\0')
+            while (*value != '\0')
             {
                 res += (*value) & (std::numeric_limits<char>::max() - std::numeric_limits<char>::min()) * p;
                 ++value;
                 p *= string_roll;
             }
             return res;
+        }
+
+        template<>
+        int get_hash_code<char*>(char* value)
+        {
+            return get_hash_code<const char*>(value);
         }
 
         template<>
