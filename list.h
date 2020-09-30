@@ -118,6 +118,11 @@ namespace nativa
 				}
 			}
 
+			void reserve(index_type capacity)
+			{
+				this->_manager.resize(capacity);
+			}
+
 			template <class Te>
 			void add(Te&& element)
 			{
@@ -207,7 +212,14 @@ namespace nativa
 
 			void attach(std::initializer_list<T>&& init)
 			{
-				attach(list<T>(std::move(init)));
+				reserve(find_best_capacity(
+					this->_memory.size(),
+					this->_count,
+					init.size());
+				for (auto&& element : init)
+				{
+					add(element);
+				}
 			}
 
 			virtual_list<T> range(index_type begin, index_type end)
@@ -228,14 +240,28 @@ namespace nativa
 			}
 
 		private:
+			static index_type find_best_capacity(
+				index_type old_capacity,
+				index_type old_count,
+				index_type count_diff)
+			{
+				auto res = old_capacity;
+				auto min = old_count + count_diff;
+				while (res < min)
+				{
+					res *= 2;
+				}
+				return res;
+			}
+
 			void extend(index_type diff = 1)
 			{
-				auto capacity = this->_memory.size();
-				while (capacity < this->_count + diff)
-				{
-					capacity *= 2;
-				}
-				this->_manager.resize(capacity, this->_count);
+				this->_manager.resize(
+					find_best_capacity(
+						this->_memory.size(),
+						this->_count,
+						diff),
+					this->_count);
 				this->_count += diff;
 			}
 
