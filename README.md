@@ -56,7 +56,7 @@ It has the following methods:
 - `begin` which returns an instance of the very simple class dictionary<TKey, TValue>::iterator pointing to the first entry appearing in the underlying array of the dictionary;
 - `end` which returns a dictionary<TKey, TValue>::iterator pointing to the last entry appearing in the underlying array. (Note that the iterator will go to the next existing entry and will finally fall at the index after the last entry so comparing an iterator to end() is a proper usage);
 
-When you dereference an iterator, you will get a reference to the entry. The entry struct has two public members key and value. Modifying the key manually will cause unexpected problems.
+When you dereference an iterator, you will get a reference to the entry. The entry struct has two public members, `key` and `value`. Modifying the key manually will cause unexpected problems.
 
 You can easily use `[]` to get the reference to the value corresponding to the given key. However, for an unexisting key, it will refer to an undesirable space.
 
@@ -73,7 +73,7 @@ From now on there is nothing so much interesting: it's just your old, favorite s
 
 ## `queue<T>`
 
-It cannot be really used as a queue, because it may not work properly when there are more than one threads.
+It cannot be really used as a queue, because it may not work properly when there are more than one thread.
 
 This class template is based on a dynamically-allocated linked-list, so it can be as long as you wish.
 
