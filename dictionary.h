@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "collections_common.h"
-#include "helpers.h"
+#include "hash_helpers.h"
 #include "span.h"
 
 namespace nativa
