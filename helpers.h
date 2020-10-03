@@ -12,7 +12,7 @@ namespace nativa
         #pragma region get_hash_code
         template <class T>
         constexpr int get_hash_code(T value) 
-        {   // 默认强转成 unsigned 作为哈希值
+        {
             return value;
         }
 
