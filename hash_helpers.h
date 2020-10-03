@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __NATIVA_COLLECTIONS_HELPERS
-#define __NATIVA_COLLECTIONS_HELPERS
+#ifndef __NATIVA_COLLECTIONS_HASH_HELPERS
+#define __NATIVA_COLLECTIONS_HASH_HELPERS
 
 #include <string>
 #include <limits>
